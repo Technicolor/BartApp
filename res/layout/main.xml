@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<RelativeLayout
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    >
+	<TextView android:id="@+id/CurrStationLabel"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/CurrStation"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentTop="true"
+	    />
+	<TextView android:id="@+id/CurrStationName"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/CurrStation"
+	    android:layout_below="@id/CurrStationLabel"
+	    />
+	<TextView android:id="@+id/NextTrainLabel"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/NextTrain"
+	    android:layout_below="@id/CurrStationName"
+	    />
+	<!--<TextView android:id="@+id/NextTrainText"-->
+	<!--    android:layout_width="fill_parent" -->
+	<!--    android:layout_height="wrap_content" -->
+	<!--    android:text="@string/CurrStation"-->
+	<!--    android:layout_below="@id/NextTrainLabel"-->
+	<!--    />-->
+	
+	<Button android:id="@+id/ETDBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/NextTrainLabel"
+		android:layout_alignParentLeft="true"
+		android:onClick="ButtonClick"
+		android:text="ETD"
+		/>
+	
+	<Button android:id="@+id/BSABtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/ETDBtn"
+		android:layout_toRightOf="@id/ETDBtn"
+		android:onClick="ButtonClick"
+		android:text="BSA"
+		/>
+	
+	</RelativeLayout>
+</ScrollView>

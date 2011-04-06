@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="CurrStation">Current Station</string>
+    <string name="app_name">BartApp</string>
+    <string name="NextTrain">Next Train</string>
+    <string name="UserAgent">BartApp/0.1</string>
+</resources>
