@@ -10,6 +10,8 @@ import android.sax.ElementListener;
 import android.sax.EndTextElementListener;
 import android.util.Log;
 
+//TODO: ST1 Currently this creates a new StationInfo object when parsing.
+//But in the future we likely want to have a pre-allocated StationInfo array.
 public class EtdAPIParser extends APIParser {
 
 	private StationInfo currentStation;

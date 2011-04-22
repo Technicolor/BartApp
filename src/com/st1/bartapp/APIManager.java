@@ -35,6 +35,12 @@ public class APIManager {
 	public static final int BARTAPI_BSACODE=0x11;
 	public static final String BARTAPI_ELEVCMD="elev";
 	public static final int BARTAPI_ELEVCODE=0x12;
+	public static final String BARTAPI_STNSCMD="stns";
+	public static final int BARTAPI_STNSCODE=0x13;
+	public static final String BARTAPI_STNINFOCMD="stninfo";
+	public static final int BARTAPI_STNINFOCODE=0x14;
+	public static final String BARTAPI_STNACCCMD="stnaccess";
+	public static final int BARTAPI_STNACCCODE=0x15;
 		
 	private AndroidHttpClient httpClient;
 	private Handler APICallbackHandler;
@@ -96,6 +102,29 @@ public class APIManager {
 		HttpPost reqPost = makeAPIPost(reqURL);
 		sendAPIPost(context, reqPost);
 	}
+
+	public void getStns(Context context) {
+		String reqArgs = makeAPIBaseParams(BARTAPI_STNSCMD, null);
+		String reqURL = makeAPIRequestURL(BARTAPI_STN, reqArgs);
+		HttpPost reqPost = makeAPIPost(reqURL);
+		sendAPIPost(context, reqPost);
+	}
+
+	public void getStnInfo(Context context, String stnOrig) {
+		String reqArgs = makeAPIBaseParams(BARTAPI_STNINFOCMD, stnOrig);
+		String reqURL = makeAPIRequestURL(BARTAPI_STN, reqArgs);
+		HttpPost reqPost = makeAPIPost(reqURL);
+		sendAPIPost(context, reqPost);
+	}
+
+	public void getStnAccess(Context context, String stnOrig, boolean showLegend) {
+		String reqArgs = makeAPIBaseParams(BARTAPI_STNACCCMD, stnOrig);
+		if (showLegend) reqArgs += "&l=1";
+		String reqURL = makeAPIRequestURL(BARTAPI_STN, reqArgs);
+		HttpPost reqPost = makeAPIPost(reqURL);
+		sendAPIPost(context, reqPost);
+	}
+
 	class BartAPIRunnable implements Runnable {
 		private HttpPost httpRequest;
 

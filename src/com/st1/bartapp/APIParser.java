@@ -27,6 +27,7 @@ public class APIParser {
 		Element uri = root.getChild("uri");
 		Element date = root.getChild("date");
 		Element time = root.getChild("time");
+		Element message = root.getChild("message");
 		
 		//Set up the listeners
 		uri.setEndTextElementListener(URIEndListener);
@@ -60,6 +61,18 @@ public class APIParser {
 				childParser = new EtdAPIParser (root, thisParser);
 				childParser.root = root;
 				cmdType = APIManager.BARTAPI_ETDCODE; 
+			}
+			else if (body.contains(APIManager.BARTAPI_CMDSTR+APIManager.BARTAPI_STNSCMD)) {
+				//TODO: ST1 MUST pass in a proper StationInfo object!!
+				childParser = new StnAPIParser(root.getChild("stations"), null);
+				childParser.root = root;
+				cmdType = APIManager.BARTAPI_STNSCODE;
+			}
+			else if (body.contains(APIManager.BARTAPI_CMDSTR+APIManager.BARTAPI_STNINFOCMD)) {
+				//TODO: ST1 MUST pass in a proper StationInfo object!!
+				childParser = new StnInfoAPIParser(root.getChild("stations"), null);
+				childParser.root = root;
+				cmdType = APIManager.BARTAPI_STNINFOCODE;
 			}
 		}
 	};
