@@ -4,11 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class StationInfoDBHelper extends SQLiteOpenHelper {
-	
-	private static final String STATIONINFO_DBNAME = "BartStationInfoDB";
-	private static final int STATIONINFO_DBVERSION = 1;
-	
+public class StationInfoDBHelper extends SQLiteOpenHelper {	
 	public static final String STINFDB_STNINFO_TABLE = "StationInfoTable";
 	public static final String STINFDB_KEY_NAME = "Name";
 	public static final String STINFDB_KEY_ABBR = "Abbr";
@@ -41,8 +37,8 @@ public class StationInfoDBHelper extends SQLiteOpenHelper {
 	public static final String STINFDB_KEY_HLINK = "HLink";
 
 	//SQLite command for creating the table, with column defs
-	private static final String DBCREATE_CMD =
-		"CREATE TABLE " + STATIONINFO_DBNAME + " (" +
+	private static final String STNINFOTABLE_CREATE_CMD =
+		"CREATE TABLE " + STINFDB_STNINFO_TABLE + " (" +
 		STINFDB_KEY_NAME + " TEXT, " +
 		STINFDB_KEY_ABBR + " TEXT, " +
 		
@@ -75,16 +71,17 @@ public class StationInfoDBHelper extends SQLiteOpenHelper {
 	private boolean isValid = false;
 	
 	public StationInfoDBHelper(Context context) {
-		super(context, STATIONINFO_DBNAME, null, STATIONINFO_DBVERSION);
+		super(context, StationInfoDB.STATIONINFO_DBNAME, null, StationInfoDB.STATIONINFO_DBVERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DBCREATE_CMD);
+		db.execSQL(STNINFOTABLE_CREATE_CMD);
 	}
 
 	@Override
 	public void onOpen(SQLiteDatabase db) {
+		//Currently only contains one table, but in future will need to check for table's presence
 		isValid = true;
 	}
 
