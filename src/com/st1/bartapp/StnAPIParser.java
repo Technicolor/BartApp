@@ -11,13 +11,15 @@ import android.util.Log;
 //TODO: ST1 Assumes a specific StationInfo object has been passed in
 public class StnAPIParser extends APIParser {
 
+	private StationData theStations;
 	private StationInfo currentStation;
 	
 	private List<String> Routes = null;
 	private List<Integer> Platforms = null;
 	
 	//In this case stnBase is the <stations> element
-	public StnAPIParser(Element stnBase, StationInfo currentStation) {
+	public StnAPIParser(Element stnBase, StationData allStations) {
+		theStations = allStations;
 		//Now for the more specialised ones
 		Element station = stnBase.getChild("station");
 		
@@ -36,13 +38,11 @@ public class StnAPIParser extends APIParser {
 	ElementListener StationListener = new ElementListener() {
 		@Override
 		public void start(Attributes arg0) {
-			Log.d("Station", "start");
 			currentStation = new StationInfo();
 		}
 		@Override
 		public void end() {
-			Log.d("Station", "end");
-//			myparent.retVal = currentStation;
+			theStations.addStationInfo(currentStation);
 			currentStation = null; //Garbage collection aid
 		}
 	};
@@ -58,7 +58,7 @@ public class StnAPIParser extends APIParser {
 	EndTextElementListener AbbrEndListener = new EndTextElementListener() {
 		@Override
 		public void end(String body) {
-			Log.d("Abbr", body);
+			currentStation.Abbr = body;
 		}
 	};
 

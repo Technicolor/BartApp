@@ -51,5 +51,14 @@
 		android:text="BSA"
 		/>
 	
+	<Button android:id="@+id/StnBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/BSABtn"
+		android:layout_toRightOf="@id/BSABtn"
+		android:onClick="ButtonClick"
+		android:text="Stn"
+		/>
+
 	</RelativeLayout>
 </ScrollView>

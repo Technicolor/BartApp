@@ -1,5 +1,7 @@
 package com.st1.bartapp;
 
+import java.util.Iterator;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +49,14 @@ public class BartApp extends Activity {
 					break;
 				case APIManager.BARTAPI_ELEVCODE:
 					break;
+				case APIManager.BARTAPI_STNSCODE:
+					StationData theStations = StationData.getStationData();
+					text.setText("");
+					Object[] stnIt = theStations.getStations().values().toArray();
+					for (Object m : stnIt) {
+						text.append(((StationInfo)m).toString() + "\n");
+					}
+					break;
 				}
 			}
 		}
@@ -60,6 +70,9 @@ public class BartApp extends Activity {
 			break;
 		case R.id.ETDBtn:
 			bartAPIs.getETD(this, "MONT");
+			break;
+		case R.id.StnBtn:
+			bartAPIs.getStns(this);
 			break;
 		}
 	}
