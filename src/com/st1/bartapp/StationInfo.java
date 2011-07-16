@@ -77,4 +77,10 @@ public class StationInfo {
 		
 		return retCV;
 	}
+	
+	public String toString() {
+		return (Abbr + " " + Name + "\n" +
+		street + " " + city + " " + county + " " + state + " " + zip + "\n" +
+		"!");
+	}
 }

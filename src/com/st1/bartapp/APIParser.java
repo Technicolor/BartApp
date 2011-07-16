@@ -63,8 +63,8 @@ public class APIParser {
 				cmdType = APIManager.BARTAPI_ETDCODE; 
 			}
 			else if (body.contains(APIManager.BARTAPI_CMDSTR+APIManager.BARTAPI_STNSCMD)) {
-				//TODO: ST1 MUST pass in a proper StationInfo object!!
-				childParser = new StnAPIParser(root.getChild("stations"), null);
+				StationData allStations = StationData.getStationData();
+				childParser = new StnAPIParser(root.getChild("stations"), allStations);
 				childParser.root = root;
 				cmdType = APIManager.BARTAPI_STNSCODE;
 			}

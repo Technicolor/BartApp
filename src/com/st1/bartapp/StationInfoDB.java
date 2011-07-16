@@ -3,10 +3,6 @@ package com.st1.bartapp;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.apache.http.client.methods.HttpPost;
-
-import com.st1.bartapp.APIManager.BartAPIRunnable;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.*;
@@ -68,14 +64,15 @@ public class StationInfoDB {
 		}		
 
 		private void FillStationInfo(Cursor allStations) {
-			ArrayList<StationInfo> theStations = new ArrayList<StationInfo>(allStations.getCount());
+			StationData theStations = StationData.getStationData();
 			allStations.moveToFirst();
 			do {
 				StationInfo newStation = new StationInfo();
-				theStations.add(newStation);
 
 				newStation.Name = allStations.getString(allStations.getColumnIndex(StationInfoDBHelper.STINFDB_KEY_NAME));
 				newStation.Abbr = allStations.getString(allStations.getColumnIndex(StationInfoDBHelper.STINFDB_KEY_ABBR));
+				//Can only add after we get the station abbreviation
+				theStations.addStationInfo(newStation);
 
 				newStation.longitude = allStations.getString(allStations.getColumnIndex(StationInfoDBHelper.STINFDB_KEY_LONG));
 				newStation.latitude = allStations.getString(allStations.getColumnIndex(StationInfoDBHelper.STINFDB_KEY_LAT));
