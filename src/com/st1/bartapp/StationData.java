@@ -1,6 +1,7 @@
 package com.st1.bartapp;
 
-import java.util.HashMap;
+import java.util.*;
+import android.content.ContentValues;
 
 import android.util.Log;
 
@@ -31,6 +32,32 @@ public class StationData {
 	
 	public StationInfo getStationInfo (String stnAbbr) {
 		return theStationsHash.get(stnAbbr);
+	}
+	
+	public List<ContentValues> getStationValues () {
+		List<ContentValues> stationValues = new ArrayList<ContentValues>();
+		
+		if (mData == null) return null; //We haven't instantiated the class yet!
+		
+		Iterator stnList = theStationsHash.values().iterator();
+		while (stnList.hasNext()) {
+			ContentValues stnValues = new ContentValues();
+			StationInfo stnInfo = (StationInfo)stnList.next();
+			//Store the station information in ContentValues
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_ABBR, stnInfo.Abbr);
+
+			//Get the rest of the station info.
+			//Station Name
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_NAME, stnInfo.Name);
+			//Station Address
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_STREET, stnInfo.street);
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_CITY, stnInfo.city);
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_COUNTY, stnInfo.county);
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_STATE, stnInfo.state);
+			stnValues.put(StationInfoDBHelper.STINFDB_KEY_ZIP, stnInfo.zip);
+		}
+		
+		return stationValues;
 	}
 
 }

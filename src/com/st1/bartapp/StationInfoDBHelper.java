@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class StationInfoDBHelper extends SQLiteOpenHelper {	
+	public static final String STATIONINFO_DBNAME = "BartStationInfoDB";
+	public static final int STATIONINFO_DBVERSION = 1;
+	
 	public static final String STINFDB_STNINFO_TABLE = "StationInfoTable";
 	public static final String STINFDB_KEY_NAME = "Name";
 	public static final String STINFDB_KEY_ABBR = "Abbr";
@@ -71,7 +74,7 @@ public class StationInfoDBHelper extends SQLiteOpenHelper {
 	private boolean isValid = false;
 	
 	public StationInfoDBHelper(Context context) {
-		super(context, StationInfoDB.STATIONINFO_DBNAME, null, StationInfoDB.STATIONINFO_DBVERSION);
+		super(context, STATIONINFO_DBNAME, null, STATIONINFO_DBVERSION);
 	}
 
 	@Override

@@ -12,14 +12,26 @@ public class APIParser {
 
 	private int cmdType;
 	private APIParser thisParser;
+	//XML-specific parsing arg, contents depends on the XML assumed to be parsed, or ignored.
+	private String apiArg;
 	
 	//Various API parsers
 	private APIParser childParser;
 	
 	public APIParser() {
+		init();
+	}
+	
+	public APIParser(String arg) {
+		init();
+		apiArg = arg;
+	}
+	
+	private void init() {
 		thisParser = this;
 		root = new RootElement("root");
 		root.setEndElementListener(RootEndListener);
+		apiArg = null;
 	}
 	
 	public int Parse(String inXML, Object[] model) {
@@ -69,8 +81,8 @@ public class APIParser {
 				cmdType = APIManager.BARTAPI_STNSCODE;
 			}
 			else if (body.contains(APIManager.BARTAPI_CMDSTR+APIManager.BARTAPI_STNINFOCMD)) {
-				//TODO: ST1 MUST pass in a proper StationInfo object!!
-				childParser = new StnInfoAPIParser(root.getChild("stations"), null);
+				StationData allStations = StationData.getStationData();
+				childParser = new StnInfoAPIParser(root.getChild("stations"), allStations.getStationInfo(apiArg));
 				childParser.root = root;
 				cmdType = APIManager.BARTAPI_STNINFOCODE;
 			}

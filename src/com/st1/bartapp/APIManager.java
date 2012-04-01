@@ -1,6 +1,5 @@
 package com.st1.bartapp;
 
-import java.util.*;
 import java.io.*;
 
 import android.content.Context;
@@ -9,11 +8,8 @@ import android.os.*;
 
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.message.*;
-import org.apache.http.protocol.HTTP;
 
 public class APIManager {
 	//Development key
@@ -41,9 +37,16 @@ public class APIManager {
 	public static final int BARTAPI_STNINFOCODE=0x14;
 	public static final String BARTAPI_STNACCCMD="stnaccess";
 	public static final int BARTAPI_STNACCCODE=0x15;
-		
+	
+	//Bundle keys
+	public static final String BARTAPI_BUNDLE_ARGKEY="apiarg";
+	
 	private AndroidHttpClient httpClient;
 	private Handler APICallbackHandler;
+	//This is a API-specific string arg.
+	//It should be set within a API call method, so that the BartAPIRunnable can grab it.
+	//Then reset back to null before the API call method returns.
+	private String apiArg;
 	
 	public APIManager (Context context, Handler cbHandler) {
 		httpClient = AndroidHttpClient.newInstance(context.getString(R.string.UserAgent));
@@ -52,6 +55,10 @@ public class APIManager {
 	
 	public void OnDestroy() {
 		httpClient.close();
+	}
+	
+	public String getArgForAPI () {
+		return apiArg;
 	}
 	
 	public static void ParseResponse(String response) {
@@ -111,10 +118,12 @@ public class APIManager {
 	}
 
 	public void getStnInfo(Context context, String stnOrig) {
+		apiArg = stnOrig;
 		String reqArgs = makeAPIBaseParams(BARTAPI_STNINFOCMD, stnOrig);
 		String reqURL = makeAPIRequestURL(BARTAPI_STN, reqArgs);
 		HttpPost reqPost = makeAPIPost(reqURL);
 		sendAPIPost(context, reqPost);
+		apiArg = null; //Reset the arg so it doesn't screw up other API calls
 	}
 
 	public void getStnAccess(Context context, String stnOrig, boolean showLegend) {
@@ -127,9 +136,11 @@ public class APIManager {
 
 	class BartAPIRunnable implements Runnable {
 		private HttpPost httpRequest;
+		private String bartApiArg = null;
 
 		public BartAPIRunnable (Context context, HttpPost request) {
 			httpRequest = request;
+			bartApiArg = APIManager.this.getArgForAPI();
 		}
 		
 		@Override
@@ -155,6 +166,11 @@ public class APIManager {
 				Message respMsg = new Message ();
 				respMsg.what = HttpStatus.SC_OK;
 				respMsg.obj = APIResponse;
+				if (bartApiArg != null) {
+					Bundle argBundle = new Bundle();
+					argBundle.putString(BARTAPI_BUNDLE_ARGKEY, bartApiArg);
+					respMsg.setData(argBundle);
+				}
 				//Done with networking, send the message!
 				APICallbackHandler.sendMessage(respMsg);
 				return APIResponse;
