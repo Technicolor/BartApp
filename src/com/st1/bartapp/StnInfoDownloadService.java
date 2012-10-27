@@ -16,7 +16,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 
+/**
+ * Service that downloads the station information and stores it in the database.
+ * 
+ * @author Gregory
+ *
+ */
 public class StnInfoDownloadService extends Service {
+	//Strings for the intent action.
 	public static final String BARTAPP_DLD_STNLIST = "com.st1.bartapp.stnlist";
 	public static final String BARTAPP_DLD_STNINFO = "com.st1.bartapp.stninfo";
 	
@@ -30,12 +37,14 @@ public class StnInfoDownloadService extends Service {
 	
 	@Override
 	public void onCreate() {
+		//Set up the APIManager object.
 		mBartAPIs = new APIManager(this, APICallbackHandler);
 	}
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	String dldMode = intent.getAction();
+    	//Are we downloading the basic list or per-station in-depth?
     	if (dldMode.equals(BARTAPP_DLD_STNLIST)) {
     		mBartAPIs.getStns(this);
     	}
@@ -57,10 +66,13 @@ public class StnInfoDownloadService extends Service {
 			if (msg.what == HttpStatus.SC_OK) {
 				Object[] k = new Object[1];
 				String arg = null;
+				//Get the API argument if any.
+				//This would be the station abbreviation that was iterated over in the STNINFO download mode.
 				if (msg.peekData() != null) {
 					arg = msg.getData().getString(APIManager.BARTAPI_BUNDLE_ARGKEY);
 				}
 		        APIParser mainAPIParser = new APIParser(arg);
+		        //Store the data, now in the StationData hashmap, in the database.
 				switch (mainAPIParser.Parse((String)msg.obj, k)) {
 				case APIManager.BARTAPI_STNSCODE:
 				case APIManager.BARTAPI_STNINFOCODE:
